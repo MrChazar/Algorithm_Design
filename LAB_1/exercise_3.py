@@ -13,7 +13,7 @@ Wyjście: wyświetlony graf.
 
 """
 # Ustawianie Parametrów
-number_of_vertices = 4
+number_of_vertices = 30
 
 # Tworzenie wierzchołków
 VV = [a for a in range(1, number_of_vertices+1)]
@@ -22,20 +22,21 @@ WW = [(a, b) for a in VV for b in VV if a != b]
 WW.append((number_of_vertices, 1))
 # Tworzenie pozycji wierzchołków w kształcie okręgu
 pos = {}
-Vx = {a: np.cos(2*np.pi*a)/number_of_vertices for a in VV}
-Vy = {a: np.sin(2*np.pi*a)/number_of_vertices for a in VV}
+Vx = {a: np.cos(2 * np.pi * a / number_of_vertices) for a in VV}
+Vy = {a: np.sin(2 * np.pi * a / number_of_vertices) for a in VV}
 for v in VV:
     pos[v] = [Vx[v], Vy[v]]
 
+# Tworzenie grafu
 g = nx.Graph()
-
 for v in VV:
     g.add_node(v)
     for v1 in VV:
         for v2 in VV:
             if (v1, v2) in WW:
                 g.add_edge(v1, v2)
-# make circle positions
+
+# Rysowanie Grafu
 nx.draw(g, with_labels=True, node_color="yellow")
 labels = nx.get_edge_attributes(g, "weight")
 nx.draw_networkx_edge_labels(g, edge_labels=labels, pos=pos)
