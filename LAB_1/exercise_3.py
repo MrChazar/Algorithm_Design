@@ -13,15 +13,17 @@ Wyjście: wyświetlony graf.
 
 """
 # Ustawianie Parametrów
-number_of_vertices = 10
+number_of_vertices = 25
 
 # Tworzenie wierzchołków
 VV = [a for a in range(1, number_of_vertices+1)]
+
 # Tworzenie krawędzi grafu pełnego
 WW = [(a, b) for a in VV for b in VV if a != b]
-WW.append((number_of_vertices, 1))
+
 # Tworzenie pozycji wierzchołków w kształcie okręgu
 pos = {}
+# Ustawienie kroku
 step = 2*np.pi/number_of_vertices
 
 # Tworzenie grafu
