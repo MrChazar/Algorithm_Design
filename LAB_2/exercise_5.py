@@ -8,13 +8,15 @@ Wyjście: symulacja działania automatu.
 """
 
 def ended_automaton(input, delta, initial_state, final_state, list_of_input):
+    print(f'Finałowe stany to: {final_state}')
     current_state = initial_state
     for a in input:
         if a not in list_of_input:
             print(f'Wejście {input} odrzucone - niepoprawne wejście')
             return False
-        print(f'Aktualny stan: {current_state}, wejście: {a}')
+        print(f'Stan przed wejściem: {current_state}, wejście: {a}')
         current_state = delta[current_state][a]
+        print(f'Stan po wejściu: {current_state}')
     if current_state in final_state:
         print(f'Wejście {input} akceptowane')
         return True
@@ -51,7 +53,8 @@ def read_automaton(file_name):
         list_of_states = file.readline().strip().split()
         list_of_input = file.readline().strip().split()
         initial_state = file.readline().strip()
-        final_state = file.readline().strip()
+        for a in file.readline().split():
+            final_state.append(a)
 
         # Odczytanie reszty linii i przypisanie ich do zmiennej delta
         for line in file:
@@ -63,5 +66,6 @@ def read_automaton(file_name):
     return list_of_states, list_of_input, delta, initial_state, final_state
 
 list_of_states, list_of_inputs, delta, initial_state, final_state = read_automaton('automaton_4.txt')
+print(final_state)
 write_automaton(list_of_states, list_of_inputs, delta, initial_state, final_state, file_name='automaton_4.txt')
-ended_automaton('abca', delta, initial_state, final_state.split(), list_of_inputs)
+ended_automaton('aba', delta, initial_state, final_state, list_of_inputs)
