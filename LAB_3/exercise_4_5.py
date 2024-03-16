@@ -1,9 +1,10 @@
 """
-Napisz program symulujący działanie maszyny Turinga o grafie przejść jak na Rys. 1 (zbiór stanów i alfabet
-są takie, jakie wynikają z grafu). Symulujący, czyli pokazujący konfigurację maszyny w kolejnych krokach.
-Umożliw podanie dowolnego wejścia (zgodnego z alfabetem).
-Wejście: słowo na taśmie.
-Wyjście: symulacja działania maszyny (w konsoli).
+Niech na wejściu maszyny Turinga będzie ciąg reprezentujący listę wierzchołków zadanego grafu < G > .
+Każdy wierzchołek jest reprezentowany przez dowolne słowo generowane alfabetem {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}.
+Wierzchołki []
+Zaproponuj (pseudokod) maszynę Turinga weryfikującą, czy układ nawiasów, przecinków i cyfr jest poprawny.
+Oszacuj złożoność czasową maszyny.
+Wyjście: maszyna Turinga, oszacowanie złożoności
 """
 
 def turing_machine(input, delta, list_of_input, current_state, final_state, reject_state):
@@ -39,28 +40,23 @@ def turing_machine(input, delta, list_of_input, current_state, final_state, reje
 
 
 # Parametry wejściowe
-list_of_states = ['q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'qr', 'qa']
-list_of_input = ['a', 'å', 'ā', '␣']
-
+list_of_states = ['q0', 'qr', 'qa', ]
+list_of_input = ['n', ',', '.', '[', ']', '␣', 'n'] # gdzie n należy do {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 delta = {
-    'q0': {'a': ['q1', 'å', 'R'], '␣': ['qr','', 'L']},
-    'q1': {'ā': ['q1', '', 'R'], '␣': ['qa','', 'L'], 'a': ['q2', '', 'L'] },
-    'q2': {'ā': ['q2', '', 'L'], 'å': ['q3', '', 'L']},
-    'q3': {'ā': ['q3', '', 'R'], 'a': ['q4', '', 'R'], 'å': ['q4', '', 'R'], '␣': ['q6','', 'L']},
-    'q6': {'ā': ['q6', '', 'L'], 'a': ['q6', '', 'L']},
-    'q4': {'ā': ['q4', '', 'R'], 'a': ['q5', 'ā', 'R'], '␣': ['qr', '', 'L'] },
-    'q5': {'ā': ['q5', '', 'R'], '␣': ['qr', '', 'L']}
+    'q0': {'␣': ['qr', '', 'L'], '[': ['q1', '', 'R'], 'n': ['qr', '', 'R']},
+    'q1': {'n': ['q1', '', 'R'], '[': ['qr', '', 'R'], ']': ['qr', '', 'R'], '.': ['q3', '', 'R']},
+    'q3': {'.': ['q3', '', 'R'], ']': ['q4', '', 'R'], ',': ['q2', '', 'R']},
+    'q4': {'␣': ['qa', '', 'L'], ']': ['qr', '', 'R'], 'n': ['qr', '', 'R'], ',': ['qr', '', 'R']},
+    'q2': {'n': ['q1', '', 'R'], ',': ['qr', '', 'R']}
 }
+
 
 final_state = ['qa']
 reject_state = ['qr']
-input = 'aa␣'
+
+input = '[nn...,nn,...,nn...]␣'
+print(len(input))
 current_state = ['q0']
 
 # Test programu
 turing_machine(input, delta, list_of_input, current_state, final_state, reject_state)
-
-
-
-
-

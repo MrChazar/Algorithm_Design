@@ -1,9 +1,7 @@
 """
-Napisz program symulujący działanie maszyny Turinga o grafie przejść jak na Rys. 1 (zbiór stanów i alfabet
-są takie, jakie wynikają z grafu). Symulujący, czyli pokazujący konfigurację maszyny w kolejnych krokach.
-Umożliw podanie dowolnego wejścia (zgodnego z alfabetem).
-Wejście: słowo na taśmie.
-Wyjście: symulacja działania maszyny (w konsoli).
+Napisz program (niekoniecznie maszynę Turinga), który rozstrzyga A = {axb : a, b ∈ (Σ − {x})∗, |a| = |b|}.
+Wejście: alfabet wejściowy Σ, słowo (na taśmie).
+Wyjście: informacja: język rozstrzygnięty, język nierozstrzygnięty.
 """
 
 def turing_machine(input, delta, list_of_input, current_state, final_state, reject_state):
@@ -39,28 +37,20 @@ def turing_machine(input, delta, list_of_input, current_state, final_state, reje
 
 
 # Parametry wejściowe
-list_of_states = ['q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'qr', 'qa']
-list_of_input = ['a', 'å', 'ā', '␣']
-
+list_of_states = ['q0', 'q1', 'q2', 'qa', 'qr']
+list_of_input = ['a', 'b', 'x', '␣']
 delta = {
-    'q0': {'a': ['q1', 'å', 'R'], '␣': ['qr','', 'L']},
-    'q1': {'ā': ['q1', '', 'R'], '␣': ['qa','', 'L'], 'a': ['q2', '', 'L'] },
-    'q2': {'ā': ['q2', '', 'L'], 'å': ['q3', '', 'L']},
-    'q3': {'ā': ['q3', '', 'R'], 'a': ['q4', '', 'R'], 'å': ['q4', '', 'R'], '␣': ['q6','', 'L']},
-    'q6': {'ā': ['q6', '', 'L'], 'a': ['q6', '', 'L']},
-    'q4': {'ā': ['q4', '', 'R'], 'a': ['q5', 'ā', 'R'], '␣': ['qr', '', 'L'] },
-    'q5': {'ā': ['q5', '', 'R'], '␣': ['qr', '', 'L']}
+    'q0': {'a': ['q1', 'b', 'R'], 'b': ['q0', '␣', 'L'], 'x': ['qr', '␣', 'R']},
+    'q1': {'a': ['q2', '␣', 'R'], 'b': ['q1', '␣', 'L'], 'x': ['qr', '␣', 'R']},
+    'q2': {'a': ['qa', '␣', 'R'], 'b': ['qa', '␣', 'R'], 'x': ['q1', '␣', 'L']}
 }
+
 
 final_state = ['qa']
 reject_state = ['qr']
-input = 'aa␣'
+
+input = 'aabxa'
 current_state = ['q0']
 
 # Test programu
 turing_machine(input, delta, list_of_input, current_state, final_state, reject_state)
-
-
-
-
-
