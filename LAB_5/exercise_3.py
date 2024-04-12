@@ -25,9 +25,9 @@ def every_combination(lst):
             #print(f"Operacja Bitowa:{(i >> j) & 1}")
             if (i >> j) & 1:
                 subset.append(lst[j])
-        #print(subset)
+        print(subset)
         if sum(subset) == 0 and subset != []:
-            #print(f"Dla listy: {subset}")
+            print(f"Dla listy: {subset}")
             return True
     return False
 

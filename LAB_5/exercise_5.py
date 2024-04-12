@@ -8,53 +8,84 @@ Dla każdej wersji zadania nr 4, czyli dla problemów z zadań 1, 2 i 3 wykonaj:
 Wyjście: 3 układy współrzędnych (dla problemów z zadań 1, 2, 3), każdy po 3 wykresy (średni, minimalny i
 maksymalny czas działania).
 """
-
 import functions as func
 import exercise_1 as ex1
 import exercise_2 as ex2
 import exercise_3 as ex3
 import time as time_t
+import matplotlib.pyplot as plt
+import numpy as np
 
-n = [a for a in range(11)]
-print(n)
+n_values = list(range(1, 100 ))
+num_trials = 10
+max_execution_time = 600  # 10 minut w sekundach
 
-# Stworzenie listy
-lista = func.fill_list(n)
-print(f"Lista {lista}")
+# Zbieranie wyników czasu wykonania dla każdego zadania i wartości n
+results = {
+    'Maksimum': {'max': [], 'min': [], 'avg': []},
+    'Mnożenie Macierzy': {'max': [], 'min': [], 'avg': []},
+    'Kombinacje': {'max': [], 'min': [], 'avg': []}
+}
 
+for n in n_values:
+    print(f"n = {n}")
+    lista = func.fill_list(n)
 
-# Zadanie 1
-time_t_start = time_t.time()
-print(f"Maksymalna: {ex1.maximal(lista)}")
-time_t_end = time_t.time()
-time_t_duration = time_t_end - time_t_start
-print(f"Jej czas: {time_t_duration}")
+    # Maksimum
+    times_max = []
+    for _ in range(num_trials):
+        start_time = time_t.time()
+        ex1.maximal(lista)
+        end_time = time_t.time()
+        execution_time = end_time - start_time
+        times_max.append(execution_time)
 
-time_t_start = time_t.time()
-print(f"Druga maksymalna: {ex1.second_max(lista)}")
-time_t_end = time_t.time()
-time_t_duration = time_t_end - time_t_start
-print(f"Jej czas: {time_t_duration}")
+    results['Maksimum']['max'].append(max(times_max))
+    results['Maksimum']['min'].append(min(times_max))
+    results['Maksimum']['avg'].append(sum(times_max) / num_trials)
 
-time_t_start = time_t.time()
-print(f"Średnia: {ex1.mean(lista)}")
-time_t_end = time_t.time()
-time_t_duration = time_t_end - time_t_start
-print(f"Jej czas: {time_t_duration}")
+    # Mnożenie Macierzy
+    times_multiply = []
+    for _ in range(num_trials):
+        matrix_1 = func.create_matrix(n)
+        matrix_2 = func.create_matrix(n)
+        start_time = time_t.time()
+        ex2.multiply_matrix(matrix_1, matrix_2)
+        end_time = time_t.time()
+        execution_time = end_time - start_time
+        times_multiply.append(execution_time)
 
-# Zadanie 2
-matrix_1 = func.create_matrix(n)
-matrix_2 = func.create_matrix(n)
+    results['Mnożenie Macierzy']['max'].append(max(times_multiply))
+    results['Mnożenie Macierzy']['min'].append(min(times_multiply))
+    results['Mnożenie Macierzy']['avg'].append(sum(times_multiply) / num_trials)
 
-time_t_start = time_t.time()
-print(f"Mnożenie macierzy: {ex2.multiply_matrix(matrix_1, matrix_2)}")
-time_t_end = time_t.time()
-time_t_duration = time_t_end - time_t_start
-print(f"Jej czas: {time_t_duration}")
+    # Kombinacje
+    times_combinations = []
+    for _ in range(num_trials):
+        start_time = time_t.time()
+        ex3.every_combination(lista)
+        end_time = time_t.time()
+        execution_time = end_time - start_time
+        times_combinations.append(execution_time)
 
-# Zadanie 3
-time_t_start = time_t.time()
-print(f"Kombinacje: {ex3.every_combination(lista)}")
-time_t_end = time_t.time()
-time_t_duration = time_t_end - time_t_start
-print(f"Jej czas: {time_t_duration}")
+    results['Kombinacje']['max'].append(max(times_combinations))
+    results['Kombinacje']['min'].append(min(times_combinations))
+    results['Kombinacje']['avg'].append(sum(times_combinations) / num_trials)
+
+# Narysowanie wykresów
+fig, axs = plt.subplots(3, 3, figsize=(15, 10), sharex=True)
+
+task_titles = ['Maksimum', 'Mnożenie Macierzy', 'Kombinacje']
+metrics = ['max', 'min', 'avg']
+
+for i, task_title in enumerate(task_titles):
+    for j, metric in enumerate(metrics):
+        ax = axs[i, j]
+        ax.plot(n_values, results[task_title][metric], marker='o', linestyle='-', label=metric)
+        ax.set_xlabel('n')
+        ax.set_ylabel('Czas (s)')
+        ax.set_title(f'{task_title} - {metric.capitalize()}')
+        ax.grid(True)
+
+fig.tight_layout()
+plt.show()

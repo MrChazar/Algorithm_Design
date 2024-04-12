@@ -9,7 +9,6 @@ import functions as func
 
 # Złożoność obliczeniowa O(n^3)
 def multiply_matrix(matrix_1, matrix_2):
-
     new_matrix = []
 
     n = len(matrix_1)
