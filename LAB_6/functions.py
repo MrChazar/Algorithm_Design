@@ -17,3 +17,6 @@ def show_matrix(list):
 
 def fill_list(n):
     return [random.randint(-10, 10) for _ in range(n)]
+
+
+

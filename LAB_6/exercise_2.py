@@ -15,22 +15,26 @@ import random
 import functions as func
 
 
+# Złożoność obliczeniowa: O(n)
 def biggest_element(A, n):
     if (n == 1):
         return A[0]
     return max(A[n - 1], biggest_element(A, n - 1))
 
 
-def  second_biggest_element(A, n):
+# Złożoność obliczeniowa: O(n)
+def second_biggest_element(A, n):
     A.remove(biggest_element(A, n))
     return biggest_element(A, n-1)
 
 
+# Złożoność obliczeniowa: O(n * logn)
 def mean_element(A, N):
     if (N == 1):
         return A[N - 1]
     else:
         return ((mean_element(A, N - 1) * (N - 1) + A[N - 1]) / N)
+
 
 lista = func.fill_list(10)
 

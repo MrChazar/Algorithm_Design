@@ -6,6 +6,7 @@ Zadanie 3:
 """
 import functions as func
 
+# O(n * logn)
 def merge_sort(arr):
     n = len(arr)
     if n > 1:
